@@ -1,31 +1,36 @@
 package com.example.sajayanegar.model;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
-@Entity
 @Getter
 @Setter
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
-class CourseRating {
+@AllArgsConstructor
+public class CourseRating {
+    @Id
+    @JsonIgnore
+    private String id;
+//    @Indexed(unique = true)
+//    private String ratingCode;
+    private int score;
+    private String courseCode;
 
-    @EmbeddedId
-    CourseRatingKey id;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-    @ManyToOne
-    //@MapsId("studentId")
-    @JoinColumn(name = "studentId_rating")
-    private Student student;
+        CourseRating that = (CourseRating) o;
 
-    @ManyToOne
-    //@MapsId("courseId")
-    @JoinColumn(name = "courseId_rating")
-    private Course course;
+        return id.equals(that.id);
+    }
 
-    private int rating;
-
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }

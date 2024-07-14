@@ -6,13 +6,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 
-public interface StudentRepository extends MongoRepository<Student,Long> {
+public interface CourseRepository  extends MongoRepository<Course,Long> {
 
-
-    Optional<Student> findById(String id);
-
-    Optional<Student> findByStudentCode(String studentCode);
-
-    void deleteById(String id);
-
+    Course findById(String id);
+    Optional<Course> findByCourseCode(String id);
 }

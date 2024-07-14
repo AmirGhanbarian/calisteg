@@ -1,26 +1,40 @@
 package com.example.sajayanegar.model;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-
-import java.util.Set;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 
 @Getter
 @Setter
-@Entity
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Course {
 
     @Id
-    private Long id;
+    @JsonIgnore
+    private String id;
 
+    @Indexed(unique = true)
+    private String courseCode;
     private String name;
+    private String professorName;
 
-    @OneToMany(mappedBy = "course")
-    Set<CourseRating> ratings;
-    @ManyToMany(mappedBy = "courses",fetch = FetchType.LAZY)
-    private Set<Student> students;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Course course = (Course) o;
+
+        return courseCode.equals(course.courseCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return courseCode.hashCode();
+    }
 
 }
